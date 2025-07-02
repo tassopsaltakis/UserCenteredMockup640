@@ -1,0 +1,68 @@
+:root {
+  --bg-gradient: linear-gradient(135deg, #e0f0ff, #f9faff);
+  --panel-bg: rgba(255,255,255,0.4);
+  --accent: #0a84ff;
+  --text-primary: #1c1c1e;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+.glass {
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+nav.navbar {
+  background: var(--panel-bg) !important;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+nav .navbar-brand,
+nav .nav-link {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+nav .nav-link.active {
+  color: var(--accent) !important;
+}
+.btn-primary {
+  background: var(--accent);
+  border: none;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: #006eef;
+}
+.card {
+  background: var(--panel-bg) !important;
+  backdrop-filter: blur(16px);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(10,132,255,0.2);
+}
+canvas {
+  background: var(--panel-bg);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(16px);
+}
