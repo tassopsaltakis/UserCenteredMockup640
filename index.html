@@ -1,73 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Dashboard • DataCenter Pro</title>
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     rel="stylesheet"
   />
-  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark glass">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">DataCenter Pro</a>
-      <button
-        class="navbar-toggler"
-        data-bs-toggle="collapse"
-        data-bs-target="#navMenu"
-      >
+      <a class="navbar-brand" href="index.html">DataCenter Pro</a>
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="index.html">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="server-details.html">Servers</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="analytics.html">Analytics</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="alerts.html">Alerts</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="settings.html">Settings</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="logout">Logout</a>
-          </li>
+          <li class="nav-item"><a class="nav-link active" href="index.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="server-details.html">Servers</a></li>
+          <li class="nav-item"><a class="nav-link" href="analytics.html">Analytics</a></li>
+          <li class="nav-item"><a class="nav-link" href="alerts.html">Alerts</a></li>
+          <li class="nav-item"><a class="nav-link" href="settings.html">Settings</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="logout">Logout</a></li>
         </ul>
       </div>
     </div>
   </nav>
+
   <div class="container py-4">
-    <div class="row g-3">
-      <div class="col-md-3">
-        <div class="card p-3 text-center glass">
-          Total Servers<br /><h2>24</h2>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card p-3 text-center glass">
-          Uptime<br /><h2>99.9%</h2>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card p-3 text-center glass">
-          Active Alerts<br /><h2>3</h2>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card p-3 text-center glass">
-          Power Usage<br /><h2>12.3MW</h2>
+    <!-- General Info Panel -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card glass p-3">
+          <strong>Data Center Location:</strong> Phoenix, AZ<br/>
+          <strong>Status:</strong> Operational<br/>
+          <strong>Last Refreshed:</strong> <span id="lastUpdated">--</span>
         </div>
       </div>
     </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3">
+      <div class="col-md-3">
+        <div class="card p-3 text-center glass">
+          Total Servers<br/><h2>24</h2>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3 text-center glass">
+          Uptime<br/><h2>99.9%</h2>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3 text-center glass">
+          Active Alerts<br/><h2>3</h2>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3 text-center glass">
+          Power Usage<br/><h2>12.3MW</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Graphs Row -->
+    <div class="row g-4 mt-4">
+      <div class="col-md-6">
+        <h5>Temperature Trends</h5>
+        <canvas id="tempChart" height="150"></canvas>
+      </div>
+      <div class="col-md-6">
+        <h5>Network Traffic Summary</h5>
+        <canvas id="netSummaryChart" height="150"></canvas>
+      </div>
+    </div>
+
+    <!-- Rack Status Map -->
     <div class="mt-4">
       <h5>Rack Status Map</h5>
       <div class="border p-5 text-center text-muted glass">
@@ -75,6 +86,48 @@
       </div>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/auth.js"></script>
+  <script>
+    // Set last refreshed timestamp
+    document.getElementById('lastUpdated').textContent =
+      new Date().toLocaleString();
+
+    // Temperature Trends Chart
+    const tempCtx = document.getElementById('tempChart').getContext('2d');
+    new Chart(tempCtx, {
+      type: 'line',
+      data: {
+        labels: ['00:00','04:00','08:00','12:00','16:00','20:00','24:00'],
+        datasets: [{
+          label: 'Temp (°C)',
+          data: [45,48,50,52,51,49,46],
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: false } }
+      }
+    });
+
+    // Network Traffic Summary Chart
+    const netCtx = document.getElementById('netSummaryChart').getContext('2d');
+    new Chart(netCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+        datasets: [{
+          label: 'Gbps',
+          data: [1.2, 1.8, 1.5, 2.0, 2.3, 1.7, 1.4]
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
 </body>
 </html>
